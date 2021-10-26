@@ -3,43 +3,60 @@ import {Text,ScrollView,View} from 'react-native';
 import { Card } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { baseUrl } from '../../shared/config';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Loading} from './Loading'
 
 function RenderItem(props){
     const item=props.item
-    if(item != null){
+    if(props.isLoading){
         return(
-            <Card>
-                <Card.FeaturedTitle style={{color:'#333'}}>{item.name}</Card.FeaturedTitle>
-                <Card.FeaturedSubtitle style={{color:'#333'}}>{item.designation}</Card.FeaturedSubtitle>
-                <Card.Image source={{uri:baseUrl+item.image}} />
-                <Text style={{margin:10,color:'#999999'}}>
-                    {item.description}
-                </Text>
-            </Card>
+            <Loading/>
+        )
+    }else if(props.errMess){
+        return(
+            <View>
+                <Text style={{color:'#999999'}}>{props.errMess}</Text>
+            </View>
         )
     }else{
-        return(<View></View>)
+        if(item != null){
+            return(
+                <Card>
+                    <Card.FeaturedTitle style={{color:'#333'}}>{item.name}</Card.FeaturedTitle>
+                    <Card.FeaturedSubtitle style={{color:'#333'}}>{item.designation}</Card.FeaturedSubtitle>
+                    <Card.Image source={{uri:baseUrl+item.image}} />
+                    <Text style={{margin:10,color:'#999999'}}>
+                        {item.description}
+                    </Text>
+                </Card>
+            )
+        }else{
+            return(<View></View>)
+        }
     }
 }
 const Home =()=> {
 
-    const dishes=useSelector(state=>state.dishes.dishes)
-    const comments=useSelector(state=>state.comments.comments)
-    const promotions=useSelector(state=>state.promotions.promotions)
-    const leaders=useSelector(state=>state.leaders.leaders)
+    const dishes=useSelector(state=>state.dishes)
+    const comments=useSelector(state=>state.comments)
+    const promotions=useSelector(state=>state.promotions)
+    const leaders=useSelector(state=>state.leaders)
     return(
         <ScrollView>
-            <Ionicons
-                testID="nextButton"
-                name="home"
-                color="rgba(0, 0, 0, .9)"
-                size={24}
-                style={{backgroundColor: 'transparent'}}
-                />
-            <RenderItem item={dishes.filter(dish=>dish.featured)[0]} />
-            <RenderItem item={promotions.filter(promo=>promo.featured)[0]}/>
-            <RenderItem item={leaders.filter(leader=>leader.featured)[0]}/>
+            <RenderItem 
+                item={dishes.dishes.filter(dish=>dish.featured)[0]}
+                isLoading={dishes.isLoading}
+                errMess={dishes.errMess}
+            />
+            <RenderItem
+                item={promotions.promotions.filter(promotion=>promotion.featured)[0]}
+                isLoading={promotions.isLoading}
+                errMess={promotions.errMess}            
+            />
+            <RenderItem 
+                item={leaders.leaders.filter(leader=>leader.featured)[0]}
+                isLoading={leaders.isLoading}
+                errMess={leaders.errMess}            
+            />
         </ScrollView>
     );
 }

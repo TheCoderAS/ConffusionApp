@@ -10,8 +10,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './components/Home';
 import Contact from './components/Contact';
 import About from './components/About';
-import { fetchComments, fetchDishes, fetchLeaders, fetchPromos, getProjects } from '../redux/ActionCreators';
+import { fetchComments, fetchDishes, fetchLeaders, fetchPromos } from '../redux/ActionCreators';
 import { connect, useDispatch } from 'react-redux';
+import { Icon } from 'react-native-elements';
+import Reservation from './components/Reservation';
 
 const Stack=createNativeStackNavigator()
 const Tab=createBottomTabNavigator()
@@ -56,6 +58,9 @@ function MainNavigator(){
       <Drawer.Screen name="MenuStack" options={{title:'Menu'}} component={MenuStackScreen}/>
       <Drawer.Screen name="Contact" options={{title:'Contact Us'}} component={Contact}/>
       <Drawer.Screen name="About" options={{title:'About Us'}} component={About}/>
+      <Drawer.Screen name="Reservation" options={{title:'Reserve Table',drawerLabel:'Reserve Table',drawerIcon:({tintColor,focused})=>{
+        <Icon name="cutlery" type="font-awesome" size={24} iconStyle={{color:tintColor}} />
+      }}} component={Reservation}/>
     </Drawer.Navigator>
   )
 }
@@ -66,7 +71,6 @@ export default function Main() {
       dispatch(fetchComments())
       dispatch(fetchLeaders())
       dispatch(fetchPromos())
-      dispatch(getProjects())
     },[])
     return (
       <View style={{flex:1}}>

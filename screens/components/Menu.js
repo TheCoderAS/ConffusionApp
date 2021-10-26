@@ -1,13 +1,13 @@
-import React, { useState } from "react"
-import { Alert, FlatList } from "react-native"
-import { Avatar, ListItem, Tile } from "react-native-elements"
+import React from "react"
+import { FlatList, Text } from "react-native"
+import { Tile } from "react-native-elements"
 import { useSelector } from "react-redux"
 import { baseUrl } from "../../shared/config"
-import { DISHES } from "../../shared/dishes"
+import { Loading } from "./Loading"
 
 const Menu =({navigation})=>{
 
-  const dishes=useSelector(state=>state.dishes.dishes)
+  const dishes=useSelector(state=>state.dishes)
   
   const renderMenuItem=({item,index})=>{
     return(
@@ -23,13 +23,25 @@ const Menu =({navigation})=>{
     )
   }
 
-  return(
-    <FlatList
-      data={dishes}
-      renderItem={renderMenuItem}
-      keyExtractor={item=>item.id.toString()}
-    />
-  )
+  if(dishes.isLoading){
+    return (
+      <Loading/>
+    )
+  }else if(dishes.errMess){
+    return(
+      <View>
+        <Text style={{color:'#999999'}}>{dishes.errMess}</Text>
+      </View>
+    )
+  }else{
+    return(
+      <FlatList
+        data={dishes.dishes}
+        renderItem={renderMenuItem}
+        keyExtractor={item=>item.id.toString()}
+      />
+    )
+  }
 }
 
 export default Menu;

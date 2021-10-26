@@ -3,7 +3,8 @@ import { Image, StyleSheet, Text, View, ScrollView, FlatList } from "react-nativ
 import moment from "moment";
 import { Card, Icon } from "react-native-elements";
 import { baseUrl } from "../../shared/config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { postFavorite } from "../../redux/ActionCreators";
 
 const RenderDish=(props)=>{
   const dish=props.dish
@@ -55,11 +56,13 @@ function RenderComments({comments}){
 const DishDetail=({route})=>{
   const dishes=useSelector(state=>state.dishes.dishes)
   const comments=useSelector(state=>state.comments.comments)
-  const [favorites,setFavourites]=useState([])
+  const favorites=useSelector(state=>state.favorites)
   const {dishId}=route.params
 
+  const dispatch=useDispatch()
   const markFavorite=(dishId)=>{
-    setFavourites(favorites.concat(dishId))
+    console.log(dishId)
+    dispatch(postFavorite(dishId))
   }
   return(
     <ScrollView>
@@ -74,7 +77,7 @@ const DishDetail=({route})=>{
 
 const styles=StyleSheet.create({
   image:{
-
+    height:180
   },
   description:{
     margin:10,
