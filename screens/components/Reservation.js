@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView, StyleSheet, Switch, Button, Modal } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, Switch, Button, Modal, Alert } from 'react-native'
 import { Card } from "react-native-elements";
 import DatePicker from "react-native-date-picker";
 import { Picker } from "@react-native-picker/picker";
 import moment from "moment";
+import * as Animatable from 'react-native-animatable';
 
 export default function Reservation(props) {
     const [guests, setGuests] = useState(1)
@@ -17,7 +18,18 @@ export default function Reservation(props) {
     }
     const handleReservation = () => {
         //console.log(JSON.stringify(data))
-        toggleModal()
+        Alert.alert('Your Reservation OK?','Number of guests: ' + guests + '\nSmoking: '+smoking+'\nDate and Time: '+moment(date).format('lll'),[
+            {
+                text:'Cancel',
+                onPress:()=>{resetForm()},
+                style:'cancel'
+            },
+            {
+                text:'OK',
+                onPress:()=>resetForm()
+            }
+        ],
+        {cancelable:false})
     }
     const resetForm = () => {
         setGuests(1)
@@ -48,10 +60,11 @@ export default function Reservation(props) {
                     />
                 </View>
             </Modal>
+            <Animatable.View animation="zoomIn" duration={1000} delay={1000}>
             <View style={styles.formRow}>
                 <Text style={styles.formLabel}>Number of Guests</Text>
                 <Picker
-                    style={styles.formItem}
+                    style={{...styles.formItem,backgroundColor:'#eaeaea',color:'#999'}}
                     selectedValue={guests}
                     onValueChange={(value, index) => setGuests(value)}
                 >
@@ -68,6 +81,7 @@ export default function Reservation(props) {
                 <Switch
                     style={styles.formItem}
                     value={smoking}
+                    trackColor={{false:'grey',true:'#512DA8'}}
                     onTintColor="#512DA8"
                     onValueChange={value => setSmoking(value)}
                 ></Switch>
@@ -109,6 +123,7 @@ export default function Reservation(props) {
                     accessibilityLabel="Learn more about this purple button"
                 />
             </View>
+            </Animatable.View>
         </ScrollView>
     )
 }
@@ -126,7 +141,7 @@ const styles = StyleSheet.create({
         color:"#999999"
     },
     formItem: {
-        flex: 1
+        flex: 1,
     },
     modal: {
         justifyContent: 'center',

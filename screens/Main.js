@@ -14,6 +14,8 @@ import { fetchComments, fetchDishes, fetchLeaders, fetchPromos } from '../redux/
 import { connect, useDispatch } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import Reservation from './components/Reservation';
+import Favourites from './components/Favourite';
+import Login from './components/Login';
 
 const Stack=createNativeStackNavigator()
 const Tab=createBottomTabNavigator()
@@ -34,6 +36,39 @@ function MenuStackScreen() {
       <Stack.Screen name="DishDetail" component={DishDetail} />
     </Stack.Navigator>
   );
+}
+function FavoriteStackScreen() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Favourites"
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#FF6600'          
+        },
+        headerTintColor:'#FFFFFF',
+        //headerShown:false
+      }}
+    >
+      <Stack.Screen name="Favourites" component={Favourites} />
+      <Stack.Screen name="DishDetail" component={DishDetail} />
+    </Stack.Navigator>
+  );
+}
+const LoginStackScreen=()=>{
+  return(
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        headerStyle:{
+          backgroundColor:'#FF6600'          
+        },
+        headerTintColor:'#FFFFFF',
+        //headerShown:false
+      }}
+    >
+      <Stack.Screen name="Login" component={Login} />
+    </Stack.Navigator>
+  )
 }
 function HomeNavigator(){
   return(
@@ -58,9 +93,13 @@ function MainNavigator(){
       <Drawer.Screen name="MenuStack" options={{title:'Menu'}} component={MenuStackScreen}/>
       <Drawer.Screen name="Contact" options={{title:'Contact Us'}} component={Contact}/>
       <Drawer.Screen name="About" options={{title:'About Us'}} component={About}/>
-      <Drawer.Screen name="Reservation" options={{title:'Reserve Table',drawerLabel:'Reserve Table',drawerIcon:({tintColor,focused})=>{
-        <Icon name="cutlery" type="font-awesome" size={24} iconStyle={{color:tintColor}} />
+      <Drawer.Screen name="Reservation" options={{title:'Reserve Table',drawerLabel:'Reserve Table',drawerIcon:({tintColor,focused})=>{<Icon name="cutlery" type="font-awesome" size={24} iconStyle={{color:tintColor}} />
       }}} component={Reservation}/>
+
+      <Drawer.Screen name="Favorites" options={{title:'Favorites',drawerLabel:'Favorites',drawerIcon:({tintColor,focused})=>{<Icon name="cutlery" type="font-awesome" size={24} iconStyle={{color:tintColor}} />
+      }}} component={FavoriteStackScreen} />
+
+      <Drawer.Screen name="LoginComp" options={{title:'Login',drawerLabel:'Login'}} component={LoginStackScreen} />
     </Drawer.Navigator>
   )
 }

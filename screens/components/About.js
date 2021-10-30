@@ -4,6 +4,7 @@ import { Avatar, Card, ListItem } from 'react-native-elements';
 import { Loading } from './Loading'
 import { baseUrl } from '../../shared/config';
 import { useSelector } from 'react-redux';
+import * as Animatable from 'react-native-animatable'
 
 const History = () => {
     return (
@@ -32,34 +33,39 @@ const LeaderShip = () => {
     }else if(leaders.errMess){
         return(
             <ScrollView>
-                <History/>
-                <Card>
-                    <Card.Title>Corporate Leadership</Card.Title>
-                    <Text style={{color:'#999999'}}>{leaders.errMess}</Text>
-                </Card>
+                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <History/>
+                    <Card>
+                        <Card.Title>Corporate Leadership</Card.Title>
+                        <Text style={{color:'#999999'}}>{leaders.errMess}</Text>
+                    </Card>
+                </Animatable.View>
             </ScrollView>
         )
     }
     else{
         return (
             <ScrollView>
-                <Card>
-                    <Card.Title>Corporate Leadership</Card.Title>
-                    <Card.Divider />
-                    {/* <FlatList> */}
-                    {leaders.leaders.map(leader => {
-                        return (
-                            <ListItem key={leader.id}>
-                                <Avatar containerStyle={{ borderWidth: 2, borderColor: '#c4c4c4' }} rounded source={{ uri: baseUrl + leader.image }} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{leader.name}</ListItem.Title>
-                                    <ListItem.Subtitle style={{ color: '#999' }}>{leader.description}</ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
-                        )
-                    })}
-                    {/* </FlatList> */}
-                </Card>
+                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <History />
+                    <Card>
+                        <Card.Title>Corporate Leadership</Card.Title>
+                        <Card.Divider />
+                        {/* <FlatList> */}
+                        {leaders.leaders.map(leader => {
+                            return (
+                                <ListItem key={leader.id}>
+                                    <Avatar containerStyle={{ borderWidth: 2, borderColor: '#c4c4c4' }} rounded source={{ uri: baseUrl + leader.image }} />
+                                    <ListItem.Content>
+                                        <ListItem.Title>{leader.name}</ListItem.Title>
+                                        <ListItem.Subtitle style={{ color: '#999' }}>{leader.description}</ListItem.Subtitle>
+                                    </ListItem.Content>
+                                </ListItem>
+                            )
+                        })}
+                        {/* </FlatList> */}
+                    </Card>
+                </Animatable.View>
             </ScrollView>
         )
     }
@@ -68,7 +74,6 @@ const About = () => {
 
     return (
         <ScrollView>
-            <History />
             <LeaderShip />
         </ScrollView>
     );

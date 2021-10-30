@@ -4,6 +4,7 @@ import { Tile } from "react-native-elements"
 import { useSelector } from "react-redux"
 import { baseUrl } from "../../shared/config"
 import { Loading } from "./Loading"
+import * as Animatable from 'react-native-animatable';
 
 const Menu =({navigation})=>{
 
@@ -11,15 +12,16 @@ const Menu =({navigation})=>{
   
   const renderMenuItem=({item,index})=>{
     return(
+      <Animatable.View key={index} animation="fadeInRightBig" duration={2000} delay={index*200}>
       <Tile
         containerStyle={{padding:10,marginBottom:10}}
-        key={index}
         title={item.name}
         caption={item.description}
         featured
         onPress={()=>navigation.navigate('DishDetail',{dishId:item.id})}
         imageSrc={{uri:baseUrl+item.image}}
       />
+      </Animatable.View>
     )
   }
 

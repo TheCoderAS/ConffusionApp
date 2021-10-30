@@ -17,7 +17,9 @@ export const fetchComments = () => (dispatch) => {
             throw errmess;
       })
     .then(response => response.json())
-    .then(comments => dispatch(addComments(comments)))
+    .then(comments => {
+        dispatch(addComments(comments))
+    })
     .catch(error => dispatch(commentsFailed(error.message)));
 };
 
@@ -165,11 +167,26 @@ export const postFavorite = (dishId)  => (dispatch) => {
 
     setTimeout(() => {
         dispatch(addFavorite(dishId));
-    }, 2000);
+    }, 500);
 };
-
-
 export const addFavorite = (dishId) => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: dishId
 });
+export const deleteFavorite = (dishId) => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: dishId
+});  
+
+export const addComment=(data)=>({
+    type:ActionTypes.ADD_COMMENT,
+    payload:data
+})
+export const postComment=(dishId,data)=>async(dispatch)=>{
+    data.date=new Date()
+    data.dishId=dishId
+    data.id=Math.floor((Math.random()*1000)+30)
+    setTimeout(()=>{
+        dispatch(addComment(data))
+    },500)
+}
